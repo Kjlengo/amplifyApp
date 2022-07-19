@@ -53,10 +53,12 @@ export default function BasicTextFields() {
 
   return (
     <Box
+      display="flex"
       component="form"
-      sx={{'& > :not(style)': { m: 1, width: '35ch' },}}
+      sx={{'& > :not(style)': { m: 1, width: '50ch' },}}
       noValidate
       autoComplete="off"
+      justifyContent="center"
     >
       <Grid
         container
@@ -65,8 +67,8 @@ export default function BasicTextFields() {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item>
-          <h1> Form Sample</h1>
+        <Grid container item justifyContent="center" alignItems="center">
+          <h1> Descarga de Grabaciones</h1>
         </Grid>
         
         <Grid item> 
