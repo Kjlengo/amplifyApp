@@ -2,15 +2,15 @@ export const descargaService = {
     create
 };
 
-async function create(argumento){
+async function create(descarga){
 
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(argumento)
+        body: JSON.stringify(descarga)
     };
 
     // cambiar url por la de apigateway
-    return await fetch("http://localhost:8090/api/productos", requestOptions).then(response => response.json())
+    await fetch("http://localhost:3000/dev/extraccion-grabaciones/apisample", requestOptions).then(response => console.log(response.json()))
     
 }

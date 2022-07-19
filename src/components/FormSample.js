@@ -9,10 +9,6 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { descargaService } from "./../services/descarga";
 
-//import { DateTimePicker } from "@mui/x-date-pickers";
-//import moment from "moment";
-//import { useState } from "react";
-
 const paises = [
   {
     value: 'ESPAÑA',
@@ -46,12 +42,13 @@ export default function BasicTextFields() {
 
   const enviarDatos = (event) => {
       event.preventDefault();
-      var pais = datos.pais;
-      var campana = datos.campana;
-      var fechaInicio = formatDate(fecha1);
-      var fechaFin = formatDate(fecha2);
-      const datosx = {pais, campana, fechaInicio, fechaFin }
-      console.log(datosx)
+      const pais = datos.pais;
+      const campana = datos.campana;
+      const fechaInicio = formatDate(fecha1);
+      const fechaFin = formatDate(fecha2);
+      const descarga = {pais, campana, fechaInicio, fechaFin }
+      console.log(descarga)
+      descargaService.create(descarga);
   }
 
   return (
@@ -126,11 +123,7 @@ export default function BasicTextFields() {
           <Button variant="contained" onClick={enviarDatos}>
             Enviar 
           </Button>
-        </Grid>  
-        <Grid item>
-          <h1> {datos.pais} - {datos.campana} </h1>
         </Grid>
-
      </Grid>   
     </Box>
   );
