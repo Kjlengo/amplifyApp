@@ -7,6 +7,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+
 import { descargaService } from "./../services/descarga";
 
 const paises = [
@@ -17,19 +21,17 @@ const paises = [
 ];
 
 export default function BasicTextFields() {
-  //const [pais, setPais] = React.useState(null);
 
-  const [datos, setDatos] = React.useState({
-      pais : '',
-      campana : ''
-  })
+  const [pais, setPais] = React.useState('');
+
+  const handleChangeSelect = (event) => {
+    setPais(event.target.value);
+  };
+
+  const [campana, setCampana] = React.useState('')
 
   const handleChange = (event) => {
-    setDatos({
-      ...datos,
-      [event.target.name] : event.target.value
-    })
-    //setPais(event.target.value);
+    setCampana( event.target.value);
   };  
 
   const [fecha1, setFecha1] = React.useState(null);
@@ -42,8 +44,6 @@ export default function BasicTextFields() {
 
   const enviarDatos = (event) => {
       event.preventDefault();
-      const pais = datos.pais;
-      const campana = datos.campana;
       const fechaInicio = formatDate(fecha1);
       const fechaFin = formatDate(fecha2);
       const descarga = {pais, campana, fechaInicio, fechaFin }
@@ -71,22 +71,21 @@ export default function BasicTextFields() {
           <h1> Descarga de Grabaciones</h1>
         </Grid>
         
-        <Grid item> 
-          <TextField
-              id="outlined-select-currency"
-              select
-              label="Pais"
-              //value={pais}
-              name = "pais"
-              onChange={handleChange}
-              //helperText="Please select your currency"
-            >
-              {paises.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-          </TextField>
+        <Grid item>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Pais</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={pais}
+                  label="Pais#2"
+                  onChange={handleChangeSelect}
+                >
+                  <MenuItem value={"España"}>España</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Grid>
 
         <Grid item>
