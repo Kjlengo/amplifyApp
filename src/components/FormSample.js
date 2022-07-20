@@ -13,29 +13,26 @@ import InputLabel from '@mui/material/InputLabel';
 
 import { descargaService } from "./../services/descarga";
 
-const paises = [
-  {
-    value: 'ESPAÑA',
-    label: 'España',
-  },
-];
 
 export default function BasicTextFields() {
 
-  const [pais, setPais] = React.useState('');
+  const [pais, setPais] = React.useState('España');
+  const [campana, setCampana] = React.useState('');
+  const [fecha1, setFecha1] = React.useState(null);
+  const [fecha2, setFecha2] = React.useState(null);
+  const [cantidad, setCantidad] = React.useState('');
 
-  const handleChangeSelect = (event) => {
+  const handlePais = (event) => {
     setPais(event.target.value);
   };
 
-  const [campana, setCampana] = React.useState('')
-
-  const handleChange = (event) => {
-    setCampana( event.target.value);
+  const handleCampana = (event) => {
+    setCampana(event.target.value);
   };  
 
-  const [fecha1, setFecha1] = React.useState(null);
-  const [fecha2, setFecha2] = React.useState(null);
+  const handleCantidad = (event) => {
+    setCantidad(event.target.value);
+  };
 
   const formatDate = (current_datetime)=>{
     let formatted_date = current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
@@ -46,9 +43,14 @@ export default function BasicTextFields() {
       event.preventDefault();
       const fechaInicio = formatDate(fecha1);
       const fechaFin = formatDate(fecha2);
-      const descarga = {pais, campana, fechaInicio, fechaFin }
+      const descarga = {pais, campana, fechaInicio, fechaFin, cantidad }
       console.log(descarga)
       descargaService.create(descarga);
+      setPais('');
+      setCampana('');
+      setCantidad('');
+      setFecha1(null);
+      setFecha2(null);
   }
 
   return (
@@ -80,7 +82,7 @@ export default function BasicTextFields() {
                   id="demo-simple-select"
                   value={pais}
                   label="Pais#2"
-                  onChange={handleChangeSelect}
+                  onChange={handlePais}
                 >
                   <MenuItem value={"España"}>España</MenuItem>
               </Select>
@@ -89,7 +91,15 @@ export default function BasicTextFields() {
         </Grid>
 
         <Grid item>
-          <TextField id="filled-basic" label="ID Campaña" type="number" name="campana" variant="outlined" onChange={handleChange} />
+          <TextField 
+            id="filled-basic" 
+            label="ID Campaña" 
+            type="number" 
+            name="campana" 
+            value={campana}
+            variant="outlined" 
+            onChange={handleCampana} 
+          />
         </Grid>  
 
         <Grid item>
@@ -119,6 +129,17 @@ export default function BasicTextFields() {
               />  
             </LocalizationProvider>
         </Grid>       
+
+        <Grid item>
+          <TextField 
+            id="cantidadID" 
+            label="Cantidad" 
+            variant="outlined"
+            type="number" 
+            value={cantidad}
+            onChange={handleCantidad}
+          />
+        </Grid>
 
         <Grid item>
           <Button variant="contained" onClick={enviarDatos}>
