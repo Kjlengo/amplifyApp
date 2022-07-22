@@ -86,9 +86,9 @@ export default function BasicTextFields() {
           <h1> Descarga de Grabaciones</h1>
         </Grid>
         
-        <Grid item>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
+        <Grid item >
+          <Box >
+            <FormControl sx={{ minWidth: 260 }} size="medium">
               <InputLabel id="demo-simple-select-label">Pais</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -108,6 +108,7 @@ export default function BasicTextFields() {
 
         <Grid item>
           <TextField 
+            sx={{ minWidth: 260 }}
             id="filled-basic" 
             label="ID Campaña" 
             type="number" 
@@ -156,7 +157,8 @@ export default function BasicTextFields() {
         </Grid>       
 
         <Grid item>
-          <TextField 
+          <TextField
+            sx={{minWidth: 260 }} 
             id="cantidadID" 
             label="Cantidad" 
             name="cantidad"
