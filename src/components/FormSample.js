@@ -19,48 +19,19 @@ import { descargaService } from "./../services/descarga";
 
 export default function BasicTextFields() {
 
-  // const [pais, setPais] = React.useState('España');
-  // const [campana, setCampana] = React.useState('');
-  //  const [fecha1, setFecha1] = React.useState(null);
-  //  const [fecha2, setFecha2] = React.useState(null);
-  // const [cantidad, setCantidad] = React.useState('');
-
-  // const handlePais = (event) => {
-  //   setPais(event.target.value);
-  // };
-
-  // const handleCampana = (event) => {
-  //   setCampana(event.target.value);
-  // };  
-
-  // const handleCantidad = (event) => {
-  //   setCantidad(event.target.value);
-  // };
-
- 
-
-  const enviarDatos = (event) => {
-      event.preventDefault();
-      console.log(formik.values.pais)
-      console.log(formik.values.fechaInicio)
-      console.log(formik.values.fechaFin)
-      console.log(formik.values.campana)
-      console.log(formik.values.cantidad)
-
-      //const descarga = {pais, campana, fecha1, fecha2, cantidad }
-      //console.log(descarga)
-      // console.log(fecha1 < fecha2)
-      // console.log((fecha2.getTime() - fecha1.getTime())/(1000*60*60*24))
-      //descargaService.create(descarga);
-      // setPais('');
-      // setCampana('');
-      // setCantidad('');
-      // setFecha1(null);
-      // setFecha2(null);
+  const enviarDatos = () => {
+      const pais = formik.values.pais;
+      const fechaInicio = formik.values.fechaInicio;
+      const fechaFin = formik.values.fechaFin;
+      const campana = formik.values.campana;
+      const cantidad = formik.values.cantidad;
+      const descarga = {pais, fechaInicio, fechaFin, campana, cantidad }
+      console.log(descarga)
+      //descargaService.create(descarga)
   }
 
   const initialValues = {
-    pais: "",
+    pais: "España",
     campana: "",
     fechaInicio: "",
     fechaFin: "",
@@ -86,11 +57,10 @@ export default function BasicTextFields() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      console.log((new Date() < moment(values.fechaInicio).add(2, 'days')) ? new Date() : moment(values.fechaInicio).add(2, 'days').format("YYYY-MM-DD HH:mm:ss"))
-      console.log(moment(values.fechaFin).diff(moment(values.fechaInicio), "minutes")/(24*60))
-      
+    onSubmit: (values) => { 
+      enviarDatos();
       alert(JSON.stringify(values, null, 2));
+
     },
   });
 
