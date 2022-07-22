@@ -172,7 +172,7 @@ export default function BasicTextFields() {
         </Grid>
 
         <Grid item>
-          <Button variant="contained" type="submit" >
+          <Button variant="contained" type="submit"  sx={{ minWidth: 260 }}>
             Enviar 
           </Button>
         </Grid>
