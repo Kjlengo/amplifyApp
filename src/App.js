@@ -1,15 +1,18 @@
-//import logo from './logo.svg';
 import './App.css';
-import Box from '@mui/material/Box';
-import FormSample from './components/FormSample';
-import AppBar from './components/appBar';
+import ContainerForm from './components/containerForm';
+import { Login } from "./pages/login"
+import {LOGIN, FORMDESCARGA} from './config/router/paths';
+
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 function App() {
   return (
-    <Box>
-      <AppBar></AppBar>
-      <FormSample></FormSample>
-    </Box>
+    <BrowserRouter>
+            <Routes>                
+                <Route path={LOGIN} element={<Login />}/>
+                <Route path={FORMDESCARGA} element={<ContainerForm />}/>
+            </Routes>
+        </BrowserRouter>
   );
 }
 
