@@ -11,6 +11,6 @@ async function create(descarga){
     };
 
     // cambiar url por la de apigateway
-    await fetch("http://localhost:3000/dev/extraccion-grabaciones/apisample", requestOptions).then(response => console.log(response.json()))
+    return await fetch("http://localhost:3000/dev/extraccion-grabaciones/apisample", requestOptions).then(response => response.json());
     
 }

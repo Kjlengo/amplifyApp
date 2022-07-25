@@ -14,20 +14,59 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import moment from "moment";
 
+import CircularProgress from '@mui/material/CircularProgress';
+import Fade from '@mui/material/Fade';
+import Alert from '@mui/material/Alert';
+
 import { descargaService } from "./../services/descarga";
 
 
 export default function BasicTextFields() {
 
-  const enviarDatos = () => {
+  const [query, setQuery] = React.useState('idle');
+  const timerRef = React.useRef();
+
+  React.useEffect(
+    () => () => {
+      clearTimeout(timerRef.current);
+    },
+    [],
+  );
+
+  const handleClickQuery = async () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    if (query !== 'idle') {
+      setQuery('idle');
+      return;
+    }
+
+    setQuery('progress'); // aca debe ir el envio de los datos 
+    await enviarDatos();
+    //setQuery('success');
+
+    timerRef.current = window.setTimeout(() => {
+      setQuery('idle');
+    }, 5000);
+  };
+
+  const enviarDatos = async () => {
       const pais = formik.values.pais;
       const fechaInicio = formik.values.fechaInicio;
       const fechaFin = formik.values.fechaFin;
       const campana = formik.values.campana;
       const cantidad = formik.values.cantidad;
       const descarga = {pais, fechaInicio, fechaFin, campana, cantidad }
-      console.log(descarga)
-      //descargaService.create(descarga)
+      // console.log(descarga)
+      let descargaR;
+      setTimeout(async () => {
+         descargaR = await descargaService.create(descarga);
+         console.log(descargaR);
+         setQuery('success');
+      }, 2000);
+      
   }
 
   const initialValues = {
@@ -58,8 +97,9 @@ export default function BasicTextFields() {
     initialValues,
     validationSchema,
     onSubmit: (values) => { 
-      enviarDatos();
-      alert(JSON.stringify(values, null, 2));
+      //enviarDatos();
+      handleClickQuery();
+      //alert(JSON.stringify(values, null, 2));
 
     },
   });
@@ -176,6 +216,23 @@ export default function BasicTextFields() {
             Enviar 
           </Button>
         </Grid>
+
+        <Grid item>
+        {query === 'success' ? (
+          <Alert severity="success">La descarga se registro correctamente</Alert>
+        ) : (
+          <Fade
+            in={query === 'progress'}
+            style={{
+              transitionDelay: query === 'progress' ? '800ms' : '0ms',
+            }}
+            unmountOnExit
+          >
+            <CircularProgress />
+          </Fade>
+        )}
+        </Grid>
+
      </Grid> 
     </Box>
   );
