@@ -53,17 +53,19 @@ export default function BasicTextFields() {
 
   const enviarDatos = async () => {
       const pais = formik.values.pais;
-      const fechaInicio = formik.values.fechaInicio;
-      const fechaFin = formik.values.fechaFin;
-      const campana = formik.values.campana;
+      const fecha1 = formik.values.fechaInicio;
+      const fecha2 = formik.values.fechaFin;
+      const idCampanya = formik.values.campana;
       const cantidad = formik.values.cantidad;
-      const descarga = {pais, fechaInicio, fechaFin, campana, cantidad }
-      let descargaR;
+      const email = formik.values.email;
+      const descarga = {idCampanya,  fecha1, fecha2, pais ,cantidad, email}
+      
       setTimeout(async () => {
-         descargaR = await descargaService.create(descarga);
+         let descargaR = await descargaService.create(descarga);
          console.log(descargaR);
+         console.log(descarga);
          setQuery('success');
-      }, 2000);
+      }, 3000);
       
   }
 
@@ -73,6 +75,7 @@ export default function BasicTextFields() {
     fechaInicio: "",
     fechaFin: "",
     cantidad: "",
+    email: "",
   };
 
   const validationSchema = yup.object({
@@ -88,7 +91,8 @@ export default function BasicTextFields() {
               .required("La fecha de Fin es requerida")
               .when("fechaInicio",
                     (fechaInicio, yup) => fechaInicio && yup.max(moment(fechaInicio).add(2,'days'), "Maximo 2 dias de descargas")),
-    cantidad: yup.number().max(500, "La cantidad no puede superar los 500").required("la campaña es requerida").positive("la cantidad debe ser positiva").integer(),
+    cantidad: yup.number().max(100, "La cantidad no puede superar los 100").required("la campaña es requerida").positive("la cantidad debe ser positiva").integer(),
+    email: yup.string().email('Ingrese un email valido').required('El email es requerido'),
   });
 
   const formik = useFormik({
@@ -205,6 +209,21 @@ export default function BasicTextFields() {
             helperText={formik.touched.cantidad && formik.errors.cantidad}
           />
         </Grid>
+        
+        <Grid item>
+          <TextField
+              sx={{minWidth: 260 }} 
+              id="emailId" 
+              label="Email" 
+              name="email"
+              variant="outlined"
+              type="email" 
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error = {formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+          </Grid>
 
         <Grid item>
           <Button variant="contained" type="submit"  sx={{ minWidth: 260 }}>
