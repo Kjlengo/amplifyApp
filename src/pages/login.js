@@ -1,24 +1,32 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Grid,
-  Paper,
   Box,
   TextField,
   FormControl,
-  Button,
   Stack,
   InputAdornment,
   IconButton,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useFormik } from "formik";
-import { useState } from "react"; 
+import React, { useState } from "react"; 
 import ButtonLogin from "../styled/ButtonLogin";
 import { ReactComponent as FrontPanel } from "../images/front-panel.svg"
 import * as yup from "yup";
+import {USERADMIN, PASSWORD} from '../consts/credentials';
+import { useNavigate , useLocation } from "react-router-dom";
+import useAuthContext from '../hooks/useAuthContext';
+import Alert from '@mui/material/Alert';
 
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const auth = useAuthContext();
+
+  let from = location.state?.from?.pathname || "/"
+
   const initialValues = {
     username: "",
     password: "",
@@ -31,26 +39,29 @@ export const Login = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema
+    validationSchema,
+    onSubmit: (values) => { 
+      if(values.username === USERADMIN && values.password === PASSWORD){
+        auth.login(values.username, ()=>{
+          navigate(from, {replace:true})
+        })
+      }
+      else {
+        setErrorCredentials(true);
+        setTimeout(()=>{
+          setErrorCredentials(false);
+        },3000)
+      }
+    },
   })
 
-  const {handleSubmit, 
-    errors, 
-    touched, 
-    getFieldProps, 
-    dirty, 
-    isValid,
-    values,
-    handleChange} = formik
-
   const [showPassword, setShowPassword] = useState(false)
+
+  const [errorCredentials, setErrorCredentials] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-  // const { handleSubmit, values, errors, touched, handleChange } = useFormik({
-  //   initialValues,
-  // });
   return (
     <Container maxWidth="xl">
       <Grid container columns={12} sx={{ height: "100vh" }}>
@@ -137,17 +148,16 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                   Iniciar Sesion
                 </Box>
 
-                <Box component={"form"} onSubmit={handleSubmit}>
+                <Box component={"form"} onSubmit={formik.handleSubmit}>
                   <Stack spacing={6}>
                     <FormControl>
                       <TextField
                         label="Usuario"
                         name="username"
-                        value={values.username}
-                        onChange={handleChange}
-                        error={errors.username ? true : false}
-                        helperText={errors.username && touched.username ? `${errors.username}`: null}
-                                  {...getFieldProps('username')}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
                       />
                     </FormControl>
                     <FormControl>
@@ -155,11 +165,10 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         label="Contraseña"
                         type={showPassword ? "text" : "password"}
                         name="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        error={errors.password ? true : false}
-                        helperText={errors.password && touched.password ? `${errors.password}`: null}
-                                  {...getFieldProps('password')}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
@@ -174,7 +183,14 @@ const handleMouseDownPassword = () => setShowPassword(!showPassword);
                         }}
                       />
                     </FormControl>
-                    <ButtonLogin variant="contained" disableRipple>Iniciar sesion</ButtonLogin>
+                    <ButtonLogin variant="contained" type="submit" disableRipple>Iniciar sesion</ButtonLogin>
+
+                    <FormControl>
+                        {errorCredentials? (
+                        <Alert severity="error">Usuario o password incorrecto</Alert>
+                        ): null }
+                    </FormControl>
+
                   </Stack>
                 </Box>
               </Stack>

@@ -45,7 +45,6 @@ export default function BasicTextFields() {
 
     setQuery('progress'); // aca debe ir el envio de los datos 
     await enviarDatos();
-    //setQuery('success');
 
     timerRef.current = window.setTimeout(() => {
       setQuery('idle');
@@ -59,7 +58,6 @@ export default function BasicTextFields() {
       const campana = formik.values.campana;
       const cantidad = formik.values.cantidad;
       const descarga = {pais, fechaInicio, fechaFin, campana, cantidad }
-      // console.log(descarga)
       let descargaR;
       setTimeout(async () => {
          descargaR = await descargaService.create(descarga);
@@ -97,10 +95,7 @@ export default function BasicTextFields() {
     initialValues,
     validationSchema,
     onSubmit: (values) => { 
-      //enviarDatos();
       handleClickQuery();
-      //alert(JSON.stringify(values, null, 2));
-
     },
   });
 
