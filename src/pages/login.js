@@ -50,7 +50,7 @@ export const Login = () => {
         setErrorCredentials(true);
         setTimeout(()=>{
           setErrorCredentials(false);
-        },3000)
+        },2000)
       }
     },
   })

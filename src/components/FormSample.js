@@ -61,11 +61,15 @@ export default function BasicTextFields() {
       const descarga = {idCampanya,  fecha1, fecha2, pais ,cantidad, email}
       
       setTimeout(async () => {
-         let descargaR = await descargaService.create(descarga);
-         console.log(descargaR);
-         console.log(descarga);
-         setQuery('success');
-      }, 3000);
+        try{
+          let descargaR = await descargaService.create(descarga);
+          console.log(descargaR);
+          setQuery('success');
+        }catch(err){
+          console.log(err);
+          setQuery('error');
+        }
+      }, 1000);
       
   }
 
@@ -245,6 +249,13 @@ export default function BasicTextFields() {
             <CircularProgress />
           </Fade>
         )}
+        </Grid>
+
+        <Grid item>
+        {query === 'error' ? (
+          <Alert severity="error">La descarga no se pudo registrar</Alert>
+        ) : null
+        }
         </Grid>
 
      </Grid> 
