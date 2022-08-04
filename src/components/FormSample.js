@@ -61,14 +61,17 @@ export default function BasicTextFields() {
       const email = formik.values.email;
       const descarga = {idCampanya,  fecha1, fecha2, pais ,cantidad, email}
       
-      setTimeout(async () => {
-        try{
-          let descargaR = await descargaService.create(descarga);
-          console.log(descargaR);
-          setQuery('success');
-        }catch(err){
-          console.log(err);
+      try{
+        let descargaR = await descargaService.create(descarga);
+        console.log(descargaR);
+      }catch(err){
+        console.log(err);
           setQuery('error');
+      }
+
+      setTimeout(async () => {
+        if(query !== 'error'){
+          setQuery('success');
         }
       }, 2000);
       

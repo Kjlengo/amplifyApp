@@ -41,8 +41,6 @@ export const Login = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => { 
-      //console.log("USER: " + values.username + " PASS: " + values.password);
-      //console.log("USER: " + USERADMIN + " PASS: " + PASSWORD);
       if(values.username === USERADMIN && values.password === PASSWORD){
         //console.log("paso...")
         auth.login(values.username, ()=>{
