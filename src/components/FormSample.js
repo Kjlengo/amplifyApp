@@ -43,12 +43,13 @@ export default function BasicTextFields() {
       return;
     }
 
-    setQuery('progress'); // aca debe ir el envio de los datos 
+    setQuery('progress'); 
     await enviarDatos();
 
     timerRef.current = window.setTimeout(() => {
       setQuery('idle');
-    }, 5000);
+      formik.resetForm();
+    }, 8000);
   };
 
   const enviarDatos = async () => {
@@ -69,12 +70,12 @@ export default function BasicTextFields() {
           console.log(err);
           setQuery('error');
         }
-      }, 1000);
+      }, 2000);
       
   }
 
   const initialValues = {
-    pais: "España",
+    pais: "",
     campana: "",
     fechaInicio: "",
     fechaFin: "",
@@ -95,7 +96,7 @@ export default function BasicTextFields() {
               .required("La fecha de Fin es requerida")
               .when("fechaInicio",
                     (fechaInicio, yup) => fechaInicio && yup.max(moment(fechaInicio).add(2,'days'), "Maximo 2 dias de descargas")),
-    cantidad: yup.number().max(100, "La cantidad no puede superar los 100").required("la campaña es requerida").positive("la cantidad debe ser positiva").integer(),
+    cantidad: yup.number().max(2000, "La cantidad no puede superar las 2000 descargas").required("la campaña es requerida").positive("la cantidad debe ser positiva").integer(),
     email: yup.string().email('Ingrese un email valido').required('El email es requerido'),
   });
 
@@ -104,6 +105,7 @@ export default function BasicTextFields() {
     validationSchema,
     onSubmit: (values) => { 
       handleClickQuery();
+      
     },
   });
 
@@ -235,9 +237,10 @@ export default function BasicTextFields() {
           </Button>
         </Grid>
 
-        <Grid item>
+        <Grid container item justifyContent="center" alignItems="center">
         {query === 'success' ? (
-          <Alert severity="success">La descarga se registro correctamente</Alert>
+          <Alert style={{width:'56%'}}
+          severity="success">La descarga se registro correctamente</Alert>
         ) : (
           <Fade
             in={query === 'progress'}
@@ -251,9 +254,19 @@ export default function BasicTextFields() {
         )}
         </Grid>
 
-        <Grid item>
+           
+        <Grid container item justifyContent="center" alignItems="center">          
+            {query === 'success' ? (
+              <Alert style={{width:'56%'}}
+              severity="info">Al finalizar las descargas será notificado al correo {formik.values.email}  </Alert>
+            ) : null
+            }          
+        </Grid>   
+
+        <Grid container item justifyContent="center" alignItems="center">
         {query === 'error' ? (
-          <Alert severity="error">La descarga no se pudo registrar</Alert>
+          <Alert style={{width:'56%'}}
+          severity="error">La descarga no se pudo registrar</Alert>
         ) : null
         }
         </Grid>
