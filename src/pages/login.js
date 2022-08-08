@@ -13,19 +13,14 @@ import { useFormik } from "formik";
 import React, { useState } from "react"; 
 import ButtonLogin from "../styled/ButtonLogin";
 import { ReactComponent as FrontPanel } from "../images/front-panel.svg"
-import * as yup from "yup";
 import {USERADMIN, PASSWORD} from '../consts/credentials';
-import { useNavigate , useLocation } from "react-router-dom";
 import useAuthContext from '../hooks/useAuthContext';
 import Alert from '@mui/material/Alert';
+import * as yup from "yup";
 
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const auth = useAuthContext();
-
-  let from = location.state?.from?.pathname || "/"
+  const {login} = useAuthContext();
 
   const initialValues = {
     username: "",
@@ -42,10 +37,11 @@ export const Login = () => {
     validationSchema,
     onSubmit: (values) => { 
       if(values.username === USERADMIN && values.password === PASSWORD){
-        //console.log("paso...")
-        auth.login(values.username, ()=>{
-          navigate(from, {replace:true})
-        })
+        console.log("paso...")
+        login();
+        // auth.login(values.username, ()=>{
+        //   navigate(from, {replace:true})
+        // })
       }
       else {
         setErrorCredentials(true);

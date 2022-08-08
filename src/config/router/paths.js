@@ -1,2 +1,4 @@
 export const LOGIN = "/";
-export const FORMDESCARGA ="/formDescarga";
+export const PRIVATE = "/private"
+export const FORMDESCARGA ="/private/formDescarga";
+//export const LOGOUT = '/private/logout';
